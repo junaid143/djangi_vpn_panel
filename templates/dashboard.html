@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+<!-- title block -->
+{% block title %}
+<title>Dashboard Page</title>
+{% endblock title %}
+
+
+
+<!-- css block -->
+{% block css %}
+<style>
+    #table-div{
+        padding: 40px ;
+    }
+    #table{
+        width: 80%;
+    }
+
+    #thead{
+        border-bottom: 1px solid black;
+        padding-bottom: 15px;
+        box-sizing: border-box;
+        
+    }
+
+/*     
+    #logoutBtn{
+        padding: 0px;
+        margin: 0px;
+        text-decoration: none;
+
+    } */
+
+@media(max-width:576px){
+    #table-div{
+        padding-top: 0px ;
+        padding: 0px 0px;
+        padding-bottom: 5px;
+        /* margin: 8px 0px; */
+    }
+
+    #table{
+        width: 80%;
+        padding: 8px 0px;
+    }
+
+    #thead{
+        border-bottom: 1px solid black;
+        padding: 8px;
+        font-size: 12px;
+        box-sizing: border-box;
+    }
+
+    .th{
+        margin: 5px ;
+    }
+
+    #tr{
+        font-size: 12px;
+        border-bottom: 1px solid gray;
+        
+    }
+
+    #updatebtn,#deletebt{
+        padding: 2px;
+        font-size: 12px;
+        margin: 1px;
+    }
+
+    #deletebtn{
+        padding: 1px 4px;
+        font-size: 12px;
+        margin: 1px;
+    }
+      
+
+
+    }
+
+
+</style>
+
+{% endblock css %}
+
+
+
+<!-- body block  -->
+
+{% block body %}
+
+<!-- navbar  -->
+{% include 'navbar.html' %}
+<div class="mt-2 p-3 text-center">
+    <h1 class="display-6">Dashboard</h1>
+</div>
+
+<div class="container mb-5 bg-light shadow " id="table-div">
+
+
+    <div class="container my-2">
+
+        <table class="" style="width: 100%;" id="table">
+            <thead id="thead">
+                <th class="th">Hostname</th>
+                <th class="th">Countryshort</th>
+                <th class="th">Username</th>
+                <th class="th">Password</th>
+                <!-- <th>Config</th> -->
+                <th class="th">Is_enable</th>
+                <th style="width: 15%;"  class="th">Action</th>
+            </thead>
+
+            <tbody>
+
+                {% for vpn in allvpn %}
+                <tr id="tr">
+                    <td class="td">{{vpn.hostname}}</td>
+                    <td class="td">{{vpn.countryshort}}</td>
+                    <td class="td">{{vpn.username}}</td>
+                    <td class="td">{{vpn.password}}</td>
+
+                    <!-- <td></td> -->
+
+                    <!-- <td>{{vpn.config}}</td> -->
+                    {% if vpn.is_enable %}
+                        <td class="td">Enable</td>
+                    {% else %}
+                        <td class="td">Disable</td>
+                    {% endif %}
+
+                    <td class="td">
+                        <a href="{% url 'update' vpn.id %}" class="btn btn-sm btn-primary " id="updatebtn">Update</a>
+                        <form action="{% url 'delete' vpn.id %}" style="display: inline-block;"
+                            onsubmit="return deleteBtn()">
+                            <!-- <input type="submit" value="Delete" class="btn  btn-sm btn-danger" id="deletebtn"> -->
+                            <button type="submit"  class="btn  btn-sm btn-danger" id="deletebtn">Delete</button>
+                        </form>
+                    </td>
+
+                </tr>
+                
+                {% endfor %}
+            </tbody>
+
+
+        </table>
+    </div>
+
+</div>
+
+
+
+{% endblock body %}
+
+
+<!-- js block  -->
+{% block js %}
+
+<script>
+    function deleteBtn() {
+        var x = confirm('Are You Sure You Want to Delete This VPN ?');
+
+        if (x == true) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+</script>
+{% endblock js %}
